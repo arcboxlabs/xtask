@@ -1,7 +1,45 @@
+use std::error::Error;
+use std::fmt;
 use std::path::Path;
 
 use anyhow::{Context, Result, bail};
 use xshell::Shell;
+
+/// Error type for commands that intentionally terminate with a specific process exit code.
+///
+/// This lets an `xtask` command communicate meaningful statuses to shell scripts while
+/// still using `anyhow::Result` internally:
+///
+/// ```
+/// # fn run() -> anyhow::Result<()> {
+/// if true {
+///     return Err(xtask::process::ExitCode::new(2).into());
+/// }
+/// # Ok(())
+/// # }
+/// ```
+#[derive(Debug)]
+pub struct ExitCode(i32);
+
+impl ExitCode {
+    /// Create an exit-code error.
+    pub fn new(code: i32) -> Self {
+        Self(code)
+    }
+
+    /// Return the process exit code.
+    pub fn code(&self) -> i32 {
+        self.0
+    }
+}
+
+impl fmt::Display for ExitCode {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(formatter, "exit with status {}", self.0)
+    }
+}
+
+impl Error for ExitCode {}
 
 /// Create an [`xshell::Shell`] with context suitable for CLI errors.
 pub fn shell() -> Result<Shell> {
