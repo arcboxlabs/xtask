@@ -1,10 +1,10 @@
-# xtask
+# xtask-kit
 
 Reusable building blocks for Rust `xtask` crates.
 
 This crate is deliberately **not** a framework for defining one universal `xtask`
 CLI. Each repository should keep its own `clap` command tree and product-specific
-build flow. `xtask` provides the small, reusable primitives that tend to be copied
+build flow. `xtask-kit` provides the small, reusable primitives that tend to be copied
 between repositories: repository paths, file checks, process helpers, artifact
 hashing, Apple signing, DMG packaging, Sparkle appcasts, and GitHub Actions outputs.
 
@@ -30,14 +30,14 @@ downstream repository. Pass the manifest directory from your repository's `xtask
 crate instead:
 
 ```rust
-let root = xtask::repo::root_from_xtask_manifest(env!("CARGO_MANIFEST_DIR"))?;
+let root = xtask_kit::repo::root_from_xtask_manifest(env!("CARGO_MANIFEST_DIR"))?;
 # anyhow::Ok(())
 ```
 
 ## Basic usage
 
 ```rust,no_run
-use xtask::{fs, hash, repo};
+use xtask_kit::{fs, hash, repo};
 
 let root = repo::root_from_xtask_manifest(env!("CARGO_MANIFEST_DIR"))?;
 let app = root.join("target/release/MyApp.app");
@@ -53,9 +53,9 @@ println!("sha256={sha}");
 ```rust,no_run
 #[cfg(target_os = "macos")]
 fn sign_app(app: &std::path::Path) -> anyhow::Result<()> {
-    let options = xtask::apple::CodesignOptions::runtime("Developer ID Application", app);
-    xtask::apple::codesign(&options)?;
-    xtask::apple::verify_signature(app)
+    let options = xtask_kit::apple::CodesignOptions::runtime("Developer ID Application", app);
+    xtask_kit::apple::codesign(&options)?;
+    xtask_kit::apple::verify_signature(app)
 }
 # #[cfg(target_os = "macos")]
 # sign_app(std::path::Path::new("MyApp.app"))?;
@@ -67,8 +67,8 @@ fn sign_app(app: &std::path::Path) -> anyhow::Result<()> {
 ```rust,no_run
 #[cfg(target_os = "macos")]
 fn package(app: std::path::PathBuf, output: std::path::PathBuf) -> anyhow::Result<()> {
-    let options = xtask::dmg::CreateDmgOptions::new("MyApp", app, output);
-    xtask::dmg::create(&options)
+    let options = xtask_kit::dmg::CreateDmgOptions::new("MyApp", app, output);
+    xtask_kit::dmg::create(&options)
 }
 # #[cfg(target_os = "macos")]
 # package("MyApp.app".into(), "MyApp.dmg".into())?;
@@ -77,7 +77,7 @@ fn package(app: std::path::PathBuf, output: std::path::PathBuf) -> anyhow::Resul
 
 ## Publishing
 
-The package name `xtask` is intentionally short. Before publishing, run:
+Before publishing, run:
 
 ```sh
 cargo publish --dry-run --all-features

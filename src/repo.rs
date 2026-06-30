@@ -7,7 +7,7 @@ use anyhow::{Context, Result};
 /// Pass `env!("CARGO_MANIFEST_DIR")` from the *calling* `xtask` crate:
 ///
 /// ```no_run
-/// let root = xtask::repo::root_from_xtask_manifest(env!("CARGO_MANIFEST_DIR"))?;
+/// let root = xtask_kit::repo::root_from_xtask_manifest(env!("CARGO_MANIFEST_DIR"))?;
 /// # anyhow::Ok(())
 /// ```
 ///
