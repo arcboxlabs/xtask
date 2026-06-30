@@ -1,6 +1,6 @@
 [package]
-name = "xtask"
-version = "0.1.3"
+name = "xtask-kit"
+version = "0.1.4"
 edition = "2024"
 rust-version = "1.85"
 authors = ["ArcBox Labs <team@arcbox.dev>"]
@@ -9,7 +9,7 @@ description = "Reusable building blocks for Rust xtask automation."
 readme = "README.md"
 repository = "https://github.com/arcboxlabs/xtask"
 homepage = "https://github.com/arcboxlabs/xtask"
-documentation = "https://docs.rs/xtask"
+documentation = "https://docs.rs/xtask-kit"
 keywords = ["xtask", "automation", "release", "macos", "codesign"]
 categories = ["development-tools::build-utils", "command-line-utilities"]
 exclude = [".github/"]

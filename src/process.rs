@@ -13,7 +13,7 @@ use xshell::Shell;
 /// ```
 /// # fn run() -> anyhow::Result<()> {
 /// if true {
-///     return Err(xtask::process::ExitCode::new(2).into());
+///     return Err(xtask_kit::process::ExitCode::new(2).into());
 /// }
 /// # Ok(())
 /// # }
