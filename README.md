@@ -77,10 +77,20 @@ fn package(app: std::path::PathBuf, output: std::path::PathBuf) -> anyhow::Resul
 
 ## Publishing
 
-Before publishing, run:
+Publish both package names for each release:
+
+- `xtask` keeps existing users compatible.
+- `xtask-kit` is the preferred non-colliding package name for repositories that
+  already have their own `xtask` package.
+
+For each package name, run:
 
 ```sh
 cargo publish --dry-run --all-features
+cargo publish --all-features
 ```
 
-Then publish with a crates.io token from an account that should own the crate.
+Keep the version number identical for both packages. The repository normally
+tracks the `xtask-kit` package metadata; publish the compatibility `xtask`
+package from a temporary clean checkout or release branch by changing only
+`package.name` and docs.rs metadata for that publish.
